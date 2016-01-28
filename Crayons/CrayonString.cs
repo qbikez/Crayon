@@ -5,7 +5,7 @@ using System;
 
 namespace Crayons
 {    
-    class CrayonString
+    public class CrayonString
     {
         class CrayonToken
         {
@@ -14,10 +14,11 @@ namespace Crayons
         }
 
         private const string escapeChar = ":";
-        private const string escapeStart = escapeChar;
-        private const string escapeEnd = escapeChar;
+        internal const string escapeStart = escapeChar;
+        internal const string escapeEnd = escapeChar;
 
         private string text;
+        public string Text => text;
 
         public CrayonString(string text)
         {
@@ -26,6 +27,8 @@ namespace Crayons
 
         private static List<CrayonToken> Parse(string text)
         {
+            // make sure to start with a default color, otherwise, regex won't capture text until some color definition
+            text = ":d:" + text;
             var pattern = $"{escapeStart}(?<color>.*?){escapeEnd}(?<text>[^{escapeStart}]*)";
             var matches = Regex.Matches(text, pattern);
 
