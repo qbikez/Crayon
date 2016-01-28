@@ -17,7 +17,10 @@ namespace Crayons.Patterns
             for (int i = 0; i < patterns.Length; i++)
             {
                 var pat = patterns[i];
-                this.patterns[i] = pat;
+                var uniquePat = pat;
+                //Regex.Replace(pat, @"\(\?\<([a-z][A-Z]+)\>\)",
+                //    $"(?<$1-{Guid.NewGuid().ToString("N").Substring(0, 3)}>)");
+                this.patterns[i] = uniquePat;
             }
         }
 
@@ -37,6 +40,7 @@ namespace Crayons.Patterns
             var result = str.Text;
             var regex = new Regex(pattern);
             var matches = regex.Matches(str.Text);
+
             if (matches.Count > 0)
             {
                 var names = regex.GetGroupNames();
