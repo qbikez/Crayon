@@ -10,7 +10,7 @@ namespace Crayons
         class CrayonToken
         {
             public string Text;
-            public Crayon Color;
+            public CrayonColor Color;
         }
 
         private const string escapeChar = ":";
@@ -35,7 +35,7 @@ namespace Crayons
             {
                 result.Add(new CrayonToken()
                 {
-                    Color = new Crayon(m.Groups["color"].Value),
+                    Color = new CrayonColor(m.Groups["color"].Value),
                     Text = m.Groups["text"].Value
                 });
             }
