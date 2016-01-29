@@ -5,79 +5,70 @@ using System;
 
 namespace Crayons
 {    
-    class CrayonString
+    public class CrayonString
     {
-        class CrayonToken
+        internal class CrayonToken
         {
             public string Text;
             public CrayonColor Color;
         }
 
-        private const string escapeChar = ":";
-        private const string escapeStart = escapeChar;
-        private const string escapeEnd = escapeChar;
+        public static string EscapeChar = ":";
+        internal static ConsoleWriter writer = new ConsoleWriter();
+        internal static string escapeStart => EscapeChar;
+        internal static string escapeEnd => EscapeChar;
 
         private string text;
+        public string Text => text;
 
         public CrayonString(string text)
         {
             this.text = text;
         }
+        
+        internal List<CrayonToken> Tokenize() {
+            return Parse(this.text);
+        }
 
         private static List<CrayonToken> Parse(string text)
         {
-            var pattern = $"{escapeStart}(?<color>.*?){escapeEnd}(?<text>[^{escapeStart}]*)";
-            var matches = Regex.Matches(text, pattern);
+            //escape escape chars
+            //text = text.Replace(escapeStart, $"{escapeStart}{escapeEnd}");
+            // make sure to start with a default color, otherwise, regex won't capture text until some color definition
+            text = ":d:" + text + ":d:";
+            var pattern = new Regex($"{escapeStart}(?<color>[a-zA-Z]*?){escapeEnd}");
+            var matches = pattern.Matches(text);
 
-            var result = new List<CrayonToken>();
-
-            foreach(Match m in matches)
+            var result = new List<CrayonToken>(matches.Count-1);
+            var curColor = new CrayonColor("d");
+            for (int i = 1; i < matches.Count; i++)
             {
+                var m = matches[i];
+                var colorName = matches[i - 1].Groups["color"].Value;
+                //empty color name means escaped escape char
+                var isEscaped = string.IsNullOrEmpty(colorName);
+                var color = !isEscaped ? new CrayonColor(colorName) : curColor;
+                curColor = color;
+                var start = matches[i - 1].Captures[0].Index + matches[i - 1].Captures[0].Length;
+                var end = m.Captures[0].Index;
+                var tokenText = text.Substring(start, end - start);
+                if (isEscaped) tokenText = EscapeChar + tokenText;
                 result.Add(new CrayonToken()
                 {
-                    Color = new CrayonColor(m.Groups["color"].Value),
-                    Text = m.Groups["text"].Value
+                    Color = color,
+                    Text = tokenText
                 });
-            }
+            }            
 
 
             return result;
         }
         public void WriteToConsole()
         {
-            WriteString(this);
+            writer.WriteString(this);
         }
 
         
-        private static void WriteString(CrayonString str)
-        {
-            var tokens = Parse(str.text);
-            var lastColor = Console.ForegroundColor;
-
-            try
-            {
-                if (tokens.Count == 0)
-                {
-                    /// text is not colored
-                    Console.WriteLine(str.text);
-                    return;
-                }
-                foreach (var token in tokens)
-                {
-                    WriteToken(token);
-                }
-                Console.WriteLine();
-            }
-            finally
-            {
-                Console.ForegroundColor = lastColor;
-            }
-        }
-
-        private static void WriteToken(CrayonToken token)
-        {
-            Console.ForegroundColor = token.Color.ConsoleColor;
-            Console.Write(token.Text);
-        }
+        
     }
 }
