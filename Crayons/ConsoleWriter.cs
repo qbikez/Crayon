@@ -20,7 +20,7 @@ namespace Crayons
                 {
                     WriteToken(token);
                 }
-                Console.WriteLine();
+                this.WriteLine();
             }
             finally
             {
@@ -33,14 +33,15 @@ namespace Crayons
             Write(token.Text, token.Color.ConsoleColor);
         }
         
-        private void WriteLine(string str = null) {
+        protected virtual void WriteLine(string str = null) {
             if (str != null) System.Console.WriteLine(str);
             else System.Console.WriteLine();
         }
         
-        private void Write(string text, ConsoleColor color) {
+        protected virtual void Write(string text, ConsoleColor color) {
             Console.ForegroundColor = color;
             Console.Write(text);
         }
+
     }
 }

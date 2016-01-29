@@ -42,5 +42,9 @@ namespace Crayons {
             if (resetColor) colored += $"{CrayonString.escapeStart}default{CrayonString.escapeEnd}";
             return colored;
         }
+        
+        public static void Configure(Action<string, ConsoleColor> write, Action<string> writeline) {
+            CrayonString.writer = new CustomConsoleWriter(write, writeline);
+        }
     }
 }

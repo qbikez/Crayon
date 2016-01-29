@@ -14,7 +14,7 @@ namespace Crayons
         }
 
         private const string escapeChar = ":";
-        private ConsoleWriter writer = new ConsoleWriter;
+        internal static ConsoleWriter writer = new ConsoleWriter();
         internal const string escapeStart = escapeChar;
         internal const string escapeEnd = escapeChar;
 
