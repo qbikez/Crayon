@@ -35,11 +35,11 @@ namespace Crayons
             //escape escape chars
             //text = text.Replace(escapeStart, $"{escapeStart}{escapeEnd}");
             // make sure to start with a default color, otherwise, regex won't capture text until some color definition
-            text = ":d:" + text + ":d:";
+            text = $"{escapeStart}d{escapeEnd}" + text + $"{escapeStart}d{escapeEnd}";
             var pattern = new Regex($"{escapeStart}(?<color>[a-zA-Z]*?){escapeEnd}");
             var matches = pattern.Matches(text);
 
-            var result = new List<CrayonToken>(matches.Count-1);
+            var result = new List<CrayonToken>(matches.Count > 0 ? matches.Count-1 : 0);
             var curColor = new CrayonColor("d");
             for (int i = 1; i < matches.Count; i++)
             {

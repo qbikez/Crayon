@@ -20,10 +20,24 @@ namespace Crayons
                 @"\[(?<green>OK)|(?<red>Err.*)\]",
                 @"(?<green>good)"
             );
+            pattern.Add(@"(?<magenta>'.*')", "highlight quoted names");
+            pattern.Add(@"[^\s]+\:\s*(?<cyan>[^\s]+)", "highlight debug values");
+
+
             pattern.Colorize("[OK] I'm a good message").WriteToConsole();
             pattern.Colorize("[Error] I'm a bad message").WriteToConsole();
-            pattern.Colorize("test: colon").WriteToConsole();
-            
+            pattern.Colorize("test:: colon ").WriteToConsole();
+            pattern.Colorize("debug::abc ef").WriteToConsole();
+            pattern.Colorize("debug: ced ef").WriteToConsole();
+
+            CrayonString.EscapeChar = "`";
+
+            pattern.Colorize("[OK] I'm a good message").WriteToConsole();
+            pattern.Colorize("[Error] I'm a bad message").WriteToConsole();
+            pattern.Colorize("test: colon ").WriteToConsole();
+            pattern.Colorize("debug:abc ef").WriteToConsole();
+            pattern.Colorize("debug: ced ef").WriteToConsole();
+
             Console.Read();
         }
     }
