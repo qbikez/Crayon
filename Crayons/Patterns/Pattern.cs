@@ -9,19 +9,22 @@ namespace Crayons.Patterns
 {
     public class Pattern
     {
-        string[] patterns = null;
+        List<Regex> patterns = new List<Regex>();
         public Pattern(params string[] patterns)
         {
-            this.patterns = new string[patterns.Length];
-
             for (int i = 0; i < patterns.Length; i++)
             {
-                var pat = patterns[i];
-                var uniquePat = pat;
-                //Regex.Replace(pat, @"\(\?\<([a-z][A-Z]+)\>\)",
-                //    $"(?<$1-{Guid.NewGuid().ToString("N").Substring(0, 3)}>)");
-                this.patterns[i] = uniquePat;
+                this.Add(patterns[i]);
             }
+        }
+
+        public void Add(string pattern)
+        {
+            var uniquePat = pattern;
+            //Regex.Replace(pat, @"\(\?\<([a-z][A-Z]+)\>\)",
+            //    $"(?<$1-{Guid.NewGuid().ToString("N").Substring(0, 3)}>)");
+            var regex = new Regex(uniquePat);
+            this.patterns.Add(regex);
         }
 
         public CrayonString Colorize(string str)
@@ -35,18 +38,17 @@ namespace Crayons.Patterns
             return colorized;
         }
 
-        public CrayonString Colorize(CrayonString str, string pattern)
+        public CrayonString Colorize(CrayonString str, Regex regex)
         {
             var result = str.Text;
-            var regex = new Regex(pattern);
             var matches = regex.Matches(str.Text);
 
             if (matches.Count > 0)
             {
                 var names = regex.GetGroupNames();
-                foreach(Match m in matches)
+                foreach (Match m in matches)
                 {
-                    foreach(var name in names)
+                    foreach (var name in names)
                     {
                         var i = 0;
                         /// ignore groups without names

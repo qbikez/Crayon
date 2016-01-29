@@ -26,9 +26,14 @@ namespace Crayons {
 
         public string Name => ConsoleColor.ToString().ToLower();
 
+        
         public static void Write(string str)
         {
             new CrayonString(str).WriteToConsole();
+        }
+        
+        public static void Write(CrayonString str) {
+            str.WriteToConsole();
         }
 
         public string Format(string value, bool resetColor = true)

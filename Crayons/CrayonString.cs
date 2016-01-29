@@ -7,13 +7,14 @@ namespace Crayons
 {    
     public class CrayonString
     {
-        class CrayonToken
+        internal class CrayonToken
         {
             public string Text;
             public Crayon Color;
         }
 
         private const string escapeChar = ":";
+        private ConsoleWriter writer = new ConsoleWriter;
         internal const string escapeStart = escapeChar;
         internal const string escapeEnd = escapeChar;
 
@@ -23,6 +24,10 @@ namespace Crayons
         public CrayonString(string text)
         {
             this.text = text;
+        }
+        
+        internal List<CrayonToken> Tokenize() {
+            return Parse(this.text);
         }
 
         private static List<CrayonToken> Parse(string text)
@@ -48,39 +53,10 @@ namespace Crayons
         }
         public void WriteToConsole()
         {
-            WriteString(this);
+            writer.WriteString(this);
         }
 
         
-        private static void WriteString(CrayonString str)
-        {
-            var tokens = Parse(str.text);
-            var lastColor = Console.ForegroundColor;
-
-            try
-            {
-                if (tokens.Count == 0)
-                {
-                    /// text is not colored
-                    Console.WriteLine(str.text);
-                    return;
-                }
-                foreach (var token in tokens)
-                {
-                    WriteToken(token);
-                }
-                Console.WriteLine();
-            }
-            finally
-            {
-                Console.ForegroundColor = lastColor;
-            }
-        }
-
-        private static void WriteToken(CrayonToken token)
-        {
-            Console.ForegroundColor = token.Color.ConsoleColor;
-            Console.Write(token.Text);
-        }
+        
     }
 }
