@@ -6,5 +6,5 @@ install:
  - curl -sSL https://raw.githubusercontent.com/aspnet/Home/dev/dnvminstall.sh | sh && source ~/.dnx/dnvm/dnvm.sh && dnvm install 1.0.0-rc1-update1
 
 script:
-  cd Crayons && dnu restore && dnu build
-  cd Crayons.Test && dnu restore && dnu test
+  - cd Crayons && pwd && dnu restore && dnu build
+  - cd Crayons.Test && pwd && dnu restore && dnu test
