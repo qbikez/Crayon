@@ -9,7 +9,25 @@ namespace Crayons.Patterns
 {
     public class Pattern
     {
-        List<Regex> patterns = new List<Regex>();
+        public class RegexWrapper {
+            public RegexWrapper(Regex regex, string comment) {
+                this.Regex = regex;
+                this.Comment = comment;
+            }
+            
+            public Regex Regex {get;set;}
+            public string Comment {get;set;} 
+            
+            public override string ToString() {
+                return $"{Comment}: {Regex}";
+            }
+        }
+        List<RegexWrapper> patterns = new List<RegexWrapper>();
+        
+        public List<RegexWrapper> Patterns => patterns;
+        public Pattern(){
+            
+        }
         public Pattern(params string[] patterns)
         {
             for (int i = 0; i < patterns.Length; i++)
@@ -18,21 +36,26 @@ namespace Crayons.Patterns
             }
         }
 
-        public void Add(string pattern)
+        public void Add(string pattern, string name = null)
         {
             var uniquePat = pattern;
             //Regex.Replace(pat, @"\(\?\<([a-z][A-Z]+)\>\)",
             //    $"(?<$1-{Guid.NewGuid().ToString("N").Substring(0, 3)}>)");
-            var regex = new Regex(uniquePat);
-            this.patterns.Add(regex);
+            this.Add(new Regex(uniquePat), name);
+            
         }
 
+        public void Add(Regex regex, string name = null)
+        {
+            this.patterns.Add(new RegexWrapper(regex, name));
+        }
+        
         public CrayonString Colorize(string str)
         {
             var colorized = new CrayonString(str);
             foreach (var pattern in patterns)
             {
-                colorized = Colorize(colorized, pattern);
+                colorized = Colorize(colorized, pattern.Regex);
             }
 
             return colorized;
@@ -64,11 +87,15 @@ namespace Crayons.Patterns
             return new CrayonString(result);
         }
 
-        private Crayon GetColor(string name)
+        private CrayonColor GetColor(string name)
         {
             var dash = name.IndexOf("-");
             if (dash >= 0) name = name.Substring(0, dash);
-            return new Crayon(name);
+            return new CrayonColor(name);
+        }
+        
+        public override string ToString() {
+            return String.Join("\r\n", patterns);
         }
     }
 

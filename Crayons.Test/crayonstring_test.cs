@@ -9,7 +9,10 @@ namespace Crayons.Test
         [Theory]
 //        [InlineData(":d:I'm :red:BAD :d:and I'm :green:Good:d:")]
         [InlineData("And I'm not colored!")]
+        [InlineData("And I have an unescaped colon: not colored!")]
         [InlineData("And I have an escaped colon:: not colored!")]
+        //fails: [InlineData("And I have an unescaped :colon: not colored!")]
+        [InlineData("And I have an unescaped colon:not colored:!")]
         public void plain_string_is_properly_parsed(string str)
         {
             CrayonString crayon = new CrayonString(str);
@@ -18,13 +21,12 @@ namespace Crayons.Test
             var sb = new StringBuilder();
             foreach (var token in tokens)
             {
-                // sb.Append(CrayonString.escapeStart)
-                //     .Append(token.Color.ToString().ToLower())
-                //     .Append(CrayonString.escapeStart);
                 sb.Append(token.Text);
             }
 
-            sb.ToString().ShouldEqual(str);
+            var removedExcapes = str.Replace($"{CrayonString.escapeStart}{CrayonString.escapeStart}", $"{CrayonString.escapeStart}");
+            
+            sb.ToString().ShouldEqual(removedExcapes);
         }
 
         bool IsOdd(int value)
