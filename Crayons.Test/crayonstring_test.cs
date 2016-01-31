@@ -29,9 +29,24 @@ namespace Crayons.Test
             sb.ToString().ShouldEqual(removedExcapes);
         }
 
-        bool IsOdd(int value)
-        {
-            return value % 2 == 1;
+        [Theory]
+        [InlineData(":d:I'm :red:BAD :d:and I'm :green:Good:d:")]
+        public void colors_are_properly_parsed(string str) {
+                  CrayonString crayon = new CrayonString(str);
+            var tokens = crayon.Tokenize();
+
+            var sb = new StringBuilder();
+            foreach (var token in tokens)
+            {
+                sb.Append(CrayonString.escapeStart)
+                    .Append(token.Color.OriginalName)
+                    .Append(CrayonString.escapeEnd);
+                sb.Append(token.Text);
+            }
+
+            //var removedExcapes = str.Replace($"{CrayonString.escapeStart}{CrayonString.escapeStart}", $"{CrayonString.escapeStart}");
+            
+            sb.ToString().ShouldEqual(str);       
         }
     }
 }

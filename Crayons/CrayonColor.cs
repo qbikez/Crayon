@@ -7,6 +7,7 @@ namespace Crayons
 {
     public class CrayonColor
     {
+        public string OriginalName {get; private set;}
         public string ANSIColor;
         public ConsoleColor ConsoleColor;
         public string Name => ConsoleColor.ToString().ToLower();
@@ -18,6 +19,7 @@ namespace Crayons
 
         public CrayonColor(string color)
         {
+            this.OriginalName = color;
             ConsoleColor clr;
             if (color == "d" || color == "default") color = "white";
             if (Enum.TryParse<ConsoleColor>(color, true, out clr))
