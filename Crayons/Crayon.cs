@@ -46,5 +46,9 @@ namespace Crayons {
         public static void Configure(Action<string, ConsoleColor> write, Action<string> writeline) {
             CrayonString.writer = new CustomConsoleWriter(write, writeline);
         }
+        
+        public override string ToString() {
+            return this.ConsoleColor.ToString().ToLower();
+        }
     }
 }

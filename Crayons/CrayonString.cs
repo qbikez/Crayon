@@ -33,7 +33,8 @@ namespace Crayons
         private static List<CrayonToken> Parse(string text)
         {
             // make sure to start with a default color, otherwise, regex won't capture text until some color definition
-            text = ":d:" + text;
+            if (!text.StartsWith(":d:")) text = ":d:" + text;
+            if (!text.EndsWith(":d:")) text = text + ":d:";
             var pattern = $"{escapeStart}(?<color>.*?){escapeEnd}(?<text>[^{escapeStart}]*)";
             var matches = Regex.Matches(text, pattern);
 
