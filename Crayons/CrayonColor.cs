@@ -16,10 +16,16 @@ namespace Crayons
         {
 
         }
+        
+        public CrayonColor(ConsoleColor color) {
+            this.OriginalName = color.ToString();
+            this.ConsoleColor = color;
+        }
 
         public CrayonColor(string color)
         {
             this.OriginalName = color;
+            color = color.ToLower();
             ConsoleColor clr;
             if (color == "d" || color == "default") color = "white";
             if (Enum.TryParse<ConsoleColor>(color, true, out clr))
