@@ -23,8 +23,8 @@ namespace Crayons
             pattern.Add(@"(?<magenta>'.*')", "highlight quoted names");
             pattern.Add(@"[^\s]+\:\s*(?<cyan>[^\s]+)", "highlight debug values");
 
-
-            pattern.Colorize("[OK] I'm a good message").WriteToConsole();
+            var col = pattern.Colorize("[OK] I'm a good message");
+            col.WriteToConsole();
             pattern.Colorize("[Error] I'm a bad message").WriteToConsole();
             pattern.Colorize("test:: colon ").WriteToConsole();
             pattern.Colorize("debug::abc ef").WriteToConsole();

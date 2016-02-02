@@ -63,14 +63,15 @@ namespace Crayons.Patterns
 
         public CrayonString Colorize(CrayonString str, Regex regex)
         {
-            var result = str.Text;
+            var result = new StringBuilder();
             var matches = regex.Matches(str.Text);
-
+            var idx = 0;
             if (matches.Count > 0)
             {
                 var names = regex.GetGroupNames();
                 foreach (Match m in matches)
                 {
+                    var replaced = m.Captures[0].Value;
                     foreach (var name in names)
                     {
                         var i = 0;
@@ -79,12 +80,16 @@ namespace Crayons.Patterns
                         var group = m.Groups[name];
                         var color = GetColor(name);
                         var coloredString = color.Format(group.Value);
-                        result = regex.ReplaceGroup(result, name, coloredString);
+                        replaced = regex.ReplaceGroup(replaced, name, coloredString);
                     }
+                    var before = str.Text.Substring(idx, m.Index - idx);
+                    result.Append(before);
+                    result.Append(replaced);
+                    idx = m.Index + m.Length;
                 }
             }
-
-            return new CrayonString(result);
+            result.Append(str.Text.Substring(idx, str.Text.Length - idx));
+            return new CrayonString(result.ToString());
         }
 
         private CrayonColor GetColor(string name)
