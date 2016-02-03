@@ -15,7 +15,7 @@ namespace Crayons
         }
 
         public static string EscapeChar = ":";
-        internal static ConsoleWriter writer = new ConsoleWriter();
+        internal static IConsoleWriter defaultWriter = new ConsoleWriter();
         internal static string escapeStart => EscapeChar;
         internal static string escapeEnd => EscapeChar;
 
@@ -115,8 +115,15 @@ namespace Crayons
         }
         public void WriteToConsole()
         {
+            WriteToConsole(defaultWriter);
+        }
+
+        public void WriteToConsole(IConsoleWriter writer)
+        {
             writer.WriteString(this);
         }
+        
+      
 
         public override string ToString()
         {

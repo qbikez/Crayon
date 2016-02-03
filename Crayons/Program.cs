@@ -37,6 +37,7 @@ namespace Crayons
             pattern.Colorize("test: colon ").WriteToConsole();
             pattern.Colorize("debug:abc ef").WriteToConsole();
             pattern.Colorize("debug: ced ef").WriteToConsole();
+            
 
             Console.Read();
         }

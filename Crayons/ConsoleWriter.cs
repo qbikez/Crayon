@@ -1,7 +1,10 @@
 using System;
 namespace Crayons
 {
-    class ConsoleWriter
+    public interface IConsoleWriter {
+        void WriteString(CrayonString str);
+    }
+    class ConsoleWriter : IConsoleWriter
     {
         public void WriteString(CrayonString str)
         {

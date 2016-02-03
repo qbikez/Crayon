@@ -19,7 +19,11 @@ namespace Crayons
 
         public static void Configure(Action<string, ConsoleColor> write, Action<string> writeline)
         {
-            CrayonString.writer = new CustomConsoleWriter(write, writeline);
+            CrayonString.defaultWriter = CreateWriter(write, writeline);
+        }
+        
+        public static IConsoleWriter CreateWriter(Action<string, ConsoleColor> write, Action<string> writeline) {
+            return new CustomConsoleWriter(write, writeline);
         }
 
         public static CrayonString Red(string text)

@@ -48,5 +48,23 @@ namespace Crayons.Test
             
             sb.ToString().ShouldEqual(str);       
         }
+        
+        [Fact]
+        public void custom_writer_works() {
+            var buffer = new StringBuilder();
+            var w = Crayon.CreateWriter((text, color) => {
+                text.ShouldNotBeEmpty();
+                buffer.Append(text);
+            }, (text) => {
+                // ignore newline for comparison to work properly
+                buffer.Append(text);
+            });
+            
+            var str = "this is a test";
+            
+            new CrayonString(str).WriteToConsole(w);
+            
+            buffer.ToString().ShouldEqual(str);
+        }
     }
 }
