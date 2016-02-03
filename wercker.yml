@@ -1,6 +1,8 @@
 box: mono
 build:
     steps:
+        - install-packages:
+            packages: unzip
         - script:
             name: install dnvm
             code: curl -sSL https://raw.githubusercontent.com/aspnet/Home/dev/dnvminstall.sh | sh && source ~/.dnx/dnvm/dnvm.sh && dnvm install 1.0.0-rc1-update1
