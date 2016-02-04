@@ -23,6 +23,7 @@
     },
     "scripts": {
         "build": "powershell scripts/build.ps1",
-        "test": "powershell scripts/test.ps1"
+        "test": "powershell scripts/test.ps1",
+        "restore": "dnu restore"
     }
 }
