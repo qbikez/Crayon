@@ -8,10 +8,35 @@ namespace Crayons
 {
     public class CrayonString
     {
-        internal class CrayonToken
+        public class CrayonToken
         {
+            public CrayonToken() {
+                
+            }
+            public CrayonToken(string text) {
+                this.Text = text;
+                this.Color = CrayonColor.Default;
+            }
+            
+            public CrayonToken(string text, CrayonColor color) {
+                this.Text = text;
+                this.Color = color;
+            }
             public string Text;
             public CrayonColor Color;
+            
+            public override string ToString() {
+                return Text;
+            }
+            
+            public override bool Equals(object obj) {
+                var other = obj as CrayonToken;
+                if (other == null) return false;
+                
+                return other.Text == this.Text && other.Color == this.Color;                
+            }
+
+            
         }
 
         public static string EscapeChar = ":";
@@ -24,7 +49,7 @@ namespace Crayons
         private List<CrayonToken> tokens;
         private string text1;
 
-        private List<CrayonToken> Tokens
+        public List<CrayonToken> Tokens
         {
             get
             {
@@ -36,6 +61,7 @@ namespace Crayons
             }
         }
 
+        //TODO: use non-static escape char
         public CrayonString() : this("")
         { }
 
@@ -65,15 +91,30 @@ namespace Crayons
             return Parse(this.text);
         }
 
+        private static bool trimStartDefaultColor = true;
+        private static bool trimEndDefaultColor = true;
         internal static string Join(List<CrayonToken> tokens)
         {
             var sb = new StringBuilder();
-            foreach (var token in tokens)
+            var curcolor = CrayonColor.Default;
+            for (int index = 0; index < tokens.Count; index++)
             {
-                sb.Append(escapeStart);
-                sb.Append(token.Color.OriginalName.ToLower());
-                sb.Append(escapeEnd);
-                sb.Append(token.Text);
+                var token = tokens[index];
+                if (index == 0 && trimStartDefaultColor && token.Color == CrayonColor.Default)
+                {
+                    sb.Append(token.Text);
+                }
+                else if (index == tokens.Count - 1 && trimEndDefaultColor
+                         && token.Color == CrayonColor.Default && token.Text == "" && curcolor == token.Color)
+                {
+                    // do nothing
+                }
+                else
+                {
+                    sb.Append(token.Color.Format(token.Text, resetColor:false));
+                }
+
+                curcolor = token.Color;
             }
             return sb.ToString();
         }

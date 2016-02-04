@@ -38,8 +38,25 @@ namespace Crayons
             pattern.Colorize("debug:abc ef").WriteToConsole();
             pattern.Colorize("debug: ced ef").WriteToConsole();
             
-            
 
+            var p = new Patterns.Pattern();
+            p.Add("(?<magenta>'.*?')", "quoted names");
+            p.Add("^(?<green>info):", "info log level");
+            p.Add("^(?<yellow>warn):", "warn log level");
+            p.Add("^(?<red>err) :", "error log level");
+            p.Add("^(?<cyan>verbose):", "verbose log level");
+            p.Add("(?<green>done|OK)", "done");
+            p.Add("(?<red>Error|Fail|Failed)", "done");
+            p.Add("(?<red>Error:.*)", "errors");
+            p.Add(@":(?<cyan>[^\s.]+)", "debug values");
+
+            var str = p.Colorize("this is a 'nested match 08:20:00' that has:colon");
+            
+            str.WriteToConsole();
+            
+            System.Console.WriteLine("");
+            System.Console.WriteLine("Press any key");
+            
             Console.Read();
         }
     }

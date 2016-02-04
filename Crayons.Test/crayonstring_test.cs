@@ -66,5 +66,16 @@ namespace Crayons.Test
             
             buffer.ToString().ShouldEqual(str);
         }
+        
+        [Theory]
+        [InlineData("this is a text, nothing fancy here")]
+        public void tokenize_plain_text(string text) {
+            var crayonstr = new CrayonString(text);
+            var tokens = crayonstr.Tokens;
+            
+            tokens.Count.ShouldEqual(1);
+            var expected = new CrayonString.CrayonToken(text);
+            tokens[0].ShouldEqual(expected); 
+        }
     }
 }
