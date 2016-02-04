@@ -78,7 +78,10 @@ namespace Crayons.Patterns
                 var ct = ColorizeToken(token, regex);
                 colorized.AddRange(ct);
             }
-            
+            if (colorized.Last().Color != CrayonColor.Default)
+            {
+                colorized.Add(new CrayonString.CrayonToken(""));
+            }
             return new CrayonString(colorized);
         }
         

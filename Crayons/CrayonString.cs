@@ -91,15 +91,30 @@ namespace Crayons
             return Parse(this.text);
         }
 
+        private static bool trimStartDefaultColor = true;
+        private static bool trimEndDefaultColor = true;
         internal static string Join(List<CrayonToken> tokens)
         {
             var sb = new StringBuilder();
-            foreach (var token in tokens)
+            var curcolor = CrayonColor.Default;
+            for (int index = 0; index < tokens.Count; index++)
             {
-                sb.Append(escapeStart);
-                sb.Append(token.Color.OriginalName.ToLower());
-                sb.Append(escapeEnd);
-                sb.Append(token.Text);
+                var token = tokens[index];
+                if (index == 0 && trimStartDefaultColor && token.Color == CrayonColor.Default)
+                {
+                    sb.Append(token.Text);
+                }
+                else if (index == tokens.Count - 1 && trimEndDefaultColor
+                         && token.Color == CrayonColor.Default && token.Text == "" && curcolor == token.Color)
+                {
+                    // do nothing
+                }
+                else
+                {
+                    sb.Append(token.Color.Format(token.Text, resetColor:false));
+                }
+
+                curcolor = token.Color;
             }
             return sb.ToString();
         }

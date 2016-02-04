@@ -6,14 +6,14 @@ namespace Crayons.Test
 {
     public class colorize_test
     {
-        [Fact]
-        [InlineData("[abc]", ":red:[abc]:default:")]
+        [Theory]
+        [InlineData("[abc123] cde]", ":red:[abc123]:default: cde]")]
         [InlineData("[abc] xxx [def]", ":red:[abc]:default: xxx :red:[def]:default:")]
         [InlineData("[abc] xxx", ":red:[abc]:default: xxx")]
         public void colorize_multiple_instances(string original, string expected)
         {
             var pattern = new Crayons.Patterns.Pattern();
-            pattern.Add(@"(?<red>\[[a-z]+\])");
+            pattern.Add(@"(?<red>\[.+?\])");
 
             var str = pattern.Colorize(original);
             str.ToString().ShouldEqual(expected);
@@ -29,8 +29,8 @@ namespace Crayons.Test
         public void colorize_multiple_closed_pattern_matches(string original, string expected)
         {
             var pattern = new Crayons.Patterns.Pattern();
-            pattern.Add(@"(?<red>\[[a-z]+\])");
-            pattern.Add(@"(?<yellow>'[a-z]+')");
+            pattern.Add(@"(?<red>\[.+?\])");
+            pattern.Add(@"(?<yellow>'.+?')");
 
             var str = pattern.Colorize(original);
             str.ToString().ShouldEqual(expected);
@@ -44,8 +44,8 @@ namespace Crayons.Test
         public void colorize_multiple_pattern_matches_order(string original, string expected)
         {
             var pattern = new Crayons.Patterns.Pattern();
-            pattern.Add(@"(?<yellow>'[a-z]+')");
-            pattern.Add(@"(?<red>\[[a-z]+\])");
+            pattern.Add(@"(?<yellow>'.+?')");
+            pattern.Add(@"(?<red>\[.+?\])");
 
             var str = pattern.Colorize(original);
             str.ToString().ShouldEqual(expected);
