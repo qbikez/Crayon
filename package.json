@@ -1,0 +1,28 @@
+{
+    "name": "",
+    "version": "",
+    "description": "",
+    "author": "",
+    "contributors": [
+        {
+            "name": "",
+            "email": ""
+        }
+    ],
+    "repository": {
+        "type": "git",
+        "url": ""
+    },
+    "bugs": {
+        "url": ""
+    },
+    "keywords": [],
+    "dependencies": {},
+    "devDependencies": {
+        "grunt-shell": "^1.1.2"
+    },
+    "scripts": {
+        "build": "powershell scripts/build.ps1",
+        "test": "powershell scripts/test.ps1"
+    }
+}
