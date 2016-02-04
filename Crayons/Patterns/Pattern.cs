@@ -25,7 +25,7 @@ namespace Crayons.Patterns
         List<RegexWrapper> patterns = new List<RegexWrapper>();
         
         public List<RegexWrapper> Patterns => patterns;
-        public Pattern(){
+        public Pattern() {
             
         }
         public Pattern(params string[] patterns)

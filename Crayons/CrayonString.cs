@@ -36,6 +36,7 @@ namespace Crayons
             }
         }
 
+        //TODO: use non-static escape char
         public CrayonString() : this("")
         { }
 
