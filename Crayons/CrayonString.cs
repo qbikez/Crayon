@@ -8,10 +8,35 @@ namespace Crayons
 {
     public class CrayonString
     {
-        internal class CrayonToken
+        public class CrayonToken
         {
+            public CrayonToken() {
+                
+            }
+            public CrayonToken(string text) {
+                this.Text = text;
+                this.Color = CrayonColor.Default;
+            }
+            
+            public CrayonToken(string text, CrayonColor color) {
+                this.Text = text;
+                this.Color = color;
+            }
             public string Text;
             public CrayonColor Color;
+            
+            public override string ToString() {
+                return Text;
+            }
+            
+            public override bool Equals(object obj) {
+                var other = obj as CrayonToken;
+                if (other == null) return false;
+                
+                return other.Text == this.Text && other.Color == this.Color;                
+            }
+
+            
         }
 
         public static string EscapeChar = ":";
@@ -24,7 +49,7 @@ namespace Crayons
         private List<CrayonToken> tokens;
         private string text1;
 
-        private List<CrayonToken> Tokens
+        public List<CrayonToken> Tokens
         {
             get
             {

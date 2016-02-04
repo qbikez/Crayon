@@ -7,20 +7,16 @@ namespace Crayons.Test
     public class colorize_test
     {
         [Fact]
-        public void colorize_multiple_instances()
+        [InlineData("[abc]", ":red:[abc]:default:")]
+        [InlineData("[abc] xxx [def]", ":red:[abc]:default: xxx :red:[def]:default:")]
+        [InlineData("[abc] xxx", ":red:[abc]:default: xxx")]
+        public void colorize_multiple_instances(string original, string expected)
         {
             var pattern = new Crayons.Patterns.Pattern();
             pattern.Add(@"(?<red>\[[a-z]+\])");
 
-            var str = pattern.Colorize("[abc]");
-            str.ToString().ShouldEqual(":red:[abc]:default:");
-
-            str = pattern.Colorize("[abc] xxx [def]");
-            str.ToString().ShouldEqual(":red:[abc]:default: xxx :red:[def]:default:");
-
-            str = pattern.Colorize("[abc] xxx");
-            str.ToString().ShouldEqual(":red:[abc]:default: xxx");
-
+            var str = pattern.Colorize(original);
+            str.ToString().ShouldEqual(expected);
         }
 
         [Theory]
