@@ -38,6 +38,7 @@ namespace Crayons
             pattern.Colorize("debug:abc ef").WriteToConsole();
             pattern.Colorize("debug: ced ef").WriteToConsole();
             
+
             var p = new Patterns.Pattern();
             p.Add("(?<magenta>'.*?')", "quoted names");
             p.Add("^(?<green>info):", "info log level");
@@ -49,10 +50,12 @@ namespace Crayons
             p.Add("(?<red>Error:.*)", "errors");
             p.Add(@":(?<cyan>[^\s.]+)", "debug values");
 
-            var str = p.Colorize("this is a 'nested match 08:20:00'");
+            var str = p.Colorize("this is a 'nested match 08:20:00' that has:colon");
             
-            Console.Write(str.ToString());
             str.WriteToConsole();
+            
+            System.Console.WriteLine("");
+            System.Console.WriteLine("Press any key");
             
             Console.Read();
         }
