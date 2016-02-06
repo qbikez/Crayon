@@ -31,6 +31,7 @@ function parse-globaljson($path = $null) {
     
     if ($global.sdk -ne $null) {
         $p = covertto-pshashtable $global.sdk
+        & dnvm install @p
         & dnvm use @p
     }
 
