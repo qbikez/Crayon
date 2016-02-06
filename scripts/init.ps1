@@ -6,3 +6,5 @@
 #dnvm use
 $global = parse-globaljson
 
+dnu restore
+
