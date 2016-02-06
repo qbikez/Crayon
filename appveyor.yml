@@ -1,0 +1,7 @@
+version: 1.0.{build}
+install:
+- ps: scripts/init.ps1
+build_script:
+- ps: scripts/build.ps1
+test_script:
+- ps: scripts/test.ps1
